@@ -695,6 +695,19 @@ fn main() {
         if statik {
             if cfg!(feature = "avcodec") || cfg!(feature = "avdevice") {
                 println!("cargo:rustc-link-lib=ole32");
+                if cfg!(target_feature = "crt-static") {
+                    println!("cargo:rustc-link-lib=strmiids");
+                    if cfg!(feature = "avdevice") {
+                        println!("cargo:rustc-link-lib=oleaut32");
+                        println!("cargo:rustc-link-lib=shlwapi");
+                        println!("cargo:rustc-link-lib=gdi32");
+                        println!("cargo:rustc-link-lib=vfw32");
+                    }
+                    if cfg!(feature = "avcodec") {
+                        println!("cargo:rustc-link-lib=mfplat");
+                        println!("cargo:rustc-link-lib=mfuuid");
+                    }
+                }
             }
 
             if cfg!(feature = "avformat") {
